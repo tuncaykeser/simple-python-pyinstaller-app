@@ -30,7 +30,7 @@ pipeline {
                 }
             }
         }
-        stage('Packaging') {
+        stage('Deliver') {
            agent any
                environment {
                    //VOLUME = '$(pwd)/sources:/src'
