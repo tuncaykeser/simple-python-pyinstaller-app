@@ -42,7 +42,7 @@ pipeline {
                      
                        //https://docs.python.org/3/distutils/builtdist.html
                    }
-                   sh 'python /setup.py bdist_dumb --format=zip'
+                   sh 'python sources/setup.py bdist_dumb --format=zip'
                }
                post {
                    success {
