@@ -31,18 +31,17 @@ pipeline {
             }
         }
         stage('Deliver') {
-           agent any
-               environment {
-                   //VOLUME = '$(pwd)/sources:/src'
-                   VOLUME = '$PWD/sources:/src'
-                   IMAGE = 'cdrx/pyinstaller-linux:python3'
+           agent {
+               docker {
+                  image 'cdrx/pyinstaller-linux:python3'
                }
+           }
                steps {
                    dir(path: env.BUILD_ID) {
                        unstash(name: 'compiled-results')
                      
                        //https://docs.python.org/3/distutils/builtdist.html
-                       sh 'python setup.py bdist_dumb --format=zip'
+                       sh 'python3 setup.py bdist_dumb --format=zip'
                    }
                }
                post {
