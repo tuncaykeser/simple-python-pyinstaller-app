@@ -46,7 +46,7 @@ pipeline {
                }
                post {
                    success {
-                       archiveArtifacts "${env.BUILD_ID}/dist/*"
+                       archiveArtifacts "dist/*"
                    }
                }
         }
