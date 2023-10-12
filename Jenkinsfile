@@ -30,24 +30,26 @@ pipeline {
                 }
             }
         }
-        stage('Deliver') { 
-            agent any
-            environment { 
-                VOLUME = '$(pwd)/sources:/src'
-                IMAGE = 'cdrx/pyinstaller-linux:python2'
-            }
-            steps {
-                dir(path: env.BUILD_ID) { 
-                    unstash(name: 'compiled-results') 
-                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
-                }
-            }
-            post {
-                success {
-                    archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals" 
-                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
-                }
-            }
+        stage('Packaging') {
+           agent any
+               environment {
+                   //VOLUME = '$(pwd)/sources:/src'
+                   VOLUME = '$PWD/sources:/src'
+                   IMAGE = 'cdrx/pyinstaller-linux:python3'
+               }
+               steps {
+                   dir(path: env.BUILD_ID) {
+                       unstash(name: 'compiled-results')
+                     
+                       //https://docs.python.org/3/distutils/builtdist.html
+                       sh 'python3 setup.py bdist_dumb --format=zip'
+                   }
+               }
+               post {
+                   success {
+                       archiveArtifacts "${env.BUILD_ID}/dist/*"
+                   }
+               }
         }
     }
 }
