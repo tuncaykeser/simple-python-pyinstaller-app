@@ -33,7 +33,7 @@ pipeline {
         stage('Deliver') {
            agent {
                docker {
-                  image 'cdrx/pyinstaller-linux:python2'
+                  image 'cdrx/pyinstaller-linux:python3'
                }
            }
                steps {
@@ -42,7 +42,7 @@ pipeline {
                      
                        //https://docs.python.org/3/distutils/builtdist.html
                    }
-                   sh 'python sources/setup.py bdist_dumb --format=zip'
+                   sh 'python3 sources/setup.py bdist_dumb --format=zip'
                }
                post {
                    success {
